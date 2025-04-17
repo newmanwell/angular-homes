@@ -26,7 +26,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
       </section>
       <section class="lising-apply">
         <h2 class="listing-apply">Apply to live here</h2>
-        <form [formGroup]="applyForm">
+        <form [formGroup]="applyForm" (submit)="submitApplication()">
           <label for="first-name">Firt Name</label>
           <input id="first-name" type="text" formControlName="firstName">
 
@@ -35,6 +35,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
           <label for="email">Email</label>
           <input id="email" type="email" formControlName="email">
+          <button type="submit" class="primary">Apply Now</button>
         </form>
       </section>
     </article>
@@ -54,5 +55,13 @@ export class DetailsComponent {
   constructor() {
     const housingLocationId = Number(this.route.snapshot.params['id']);
     this.housingLocation = this.housingService.getHousingLocationById(housingLocationId);
+  }
+
+  submitApplication() {
+    this.housingService.submitApplication(
+      this.applyForm.value.firstName ?? '',
+      this.applyForm.value.lastName ?? '',
+      this.applyForm.value.email ?? ''
+    )
   }
 }
